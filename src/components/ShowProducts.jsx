@@ -31,7 +31,7 @@ const ShowProducts = () => {
                     <div className="col-md-4 offset-4">
                         <div className="d-grid mx-auto">
                             <button className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalProducts">
-                                <i className="fa-solid fa-circle-plus pr-3">Add</i>
+                                <i className="fa-solid fa-circle-plus pr-3">Add </i>
                             </button>
                         </div>
                     </div>
