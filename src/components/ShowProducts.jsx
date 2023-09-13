@@ -24,13 +24,105 @@ const ShowProducts = () => {
         setProducts(respuesta.data)
     }
 
+    const openModal = (op, id, name, description, price) => {
+        setId('');
+        setName('');
+        setDescription('');
+        setPrice('');
+        setOperation(op);
+
+        if(op === 1){
+            setTitle('Registar Producto')
+        }else if(op === 2){
+            setTitle('Editar Producto')
+            setId(id);
+            setName(name);
+            setDescription(description);
+            setPrice(price);
+        }
+
+        window.setTimeout(function(){
+            document.getElementById('nombre').focus();
+        },500);
+    }
+
+    const validar = () => {
+        var parametros;
+        var metodo;
+
+        if(name.trim() === ""){
+            show_alerta("Produto precisa precisa de um nome", "warning");
+        }
+        else if(description.trim() === ""){
+            show_alerta("Produto precisa descrição de um nome", "warning");
+        }
+        else if(price.trim() === ""){
+            show_alerta("Produto precisa preço de um nome", "warning");
+        }
+        else{
+            if(operation === 1){
+                parametros = {
+                    name:name.trim(),
+                    description: description.trim(),
+                    price: price
+                }
+                metodo= "POST";
+            }
+            else{
+                parametros = {
+                    name:name.trim(),
+                    description: description.trim(),
+                    price: price
+                }
+                metodo= "PUT";
+            }
+            enviarSolicitud(metodo,parametros);
+        }
+    }
+
+    const enviarSolicitud = async(metodo, parametros) => {
+        await axios({ method:metodo, url: url, data:parametros})
+              .then(function(respuesta){
+                var tipo = respuesta.data[0];
+                var msj = respuesta.data[1];
+                show_alerta(msj,tipo);
+                if(tipo === 'success'){
+                    document.getElementById('btnCerrar').click();
+                    getProducts();
+                }
+              })
+              .catch(function(error){
+                show_alerta('Error en la solicitude', 'error');
+                console.log(error);
+              })
+    }
+
+    const deleteProduct = (id, name) => {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+            title: 'Seguro de eliminar el produto' + name + ' ?',
+            icon: 'question', text: 'No se podrá dar marcha atrás',
+            showCancelButton:true,confirmButtonText:'Si, eliminar', cancelButtonText:'Cancelar'
+        })
+        .then((result) => {
+            if(result.isConfirmed){
+                setId(id);
+                enviarSolicitud('DELETE', {id:id});
+            }else{
+                show_alerta('El producto no fue eliminado', 'info')
+            }
+        })
+    }
+
     return (
         <div className="App">
             <div className="container-fluid">
                 <div className="row mt-3">
                     <div className="col-md-4 offset-4">
                         <div className="d-grid mx-auto">
-                            <button className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalProducts">
+                            <button className="btn btn-dark" 
+                                onClick={ ()=> openModal(1)}
+                                data-bs-toggle="modal" data-bs-target="#modalProducts">
                                 <i className="fa-solid fa-circle-plus pr-3">Add</i>
                             </button>
                         </div>
@@ -51,16 +143,18 @@ const ShowProducts = () => {
                                 <tbody className="table-group-divider">
                                     { products.map( (product, id) => (
                                         <tr key={product.id}>
-                                            <td>{id}</td>
+                                            <td>{(id+1)}</td>
                                             <td>{product.name}</td>
                                             <td>{product.description}</td>
                                             <td>{new Intl.NumberFormat('es-mx').format(product.price)}</td>
                                             <td>
-                                                <button className="btn btn-warning">
+                                                <button 
+                                                    className="btn btn-warning data-bs-t" data-bs-toggle="modal" data-bs-target="#modalProducts"
+                                                    onClick={ ()=> openModal(2,product.id,product.name,product.description,product.price)}>
                                                     <i className="fa-solid fa-edit"></i>
                                                 </button>
                                                 &nbsp;
-                                                <button className="btn btn-warning">
+                                                <button onClick={ () => deleteProduct(product.id, product.name) } className="btn btn-danger">
                                                 <i className="fa-solid fa-trash"></i>
                                                 </button>
                                             </td>
@@ -75,7 +169,48 @@ const ShowProducts = () => {
                     </div>
                 </div>
             </div>
-            <div className="modal fade">
+            <div id="modalProducts" className="modal fade" arial-hidden='true'>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <label className="h5">{title}</label>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" arial-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <input type="hidden" id="id" />
+                            <div className="input-group mb-3">
+                                <span className="input-group-text"> <i className="fa-solid fa-gift"></i> </span>
+                                <input 
+                                    type="text" id="nombre" className="form-control"
+                                    placeholder="Nobre" value={name} onChange={ (e) => setName(e.target.value)}
+                                />
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text"> <i className="fa-solid fa-comment"></i> </span>
+                                <input 
+                                    type="text" id="nombre" className="form-control"
+                                    placeholder="Description" value={description} onChange={ (e) => setDescription(e.target.value)}
+                                />
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text"> <i className="fa-solid fa-dollar-sign"></i> </span>
+                                <input 
+                                    type="text" id="nombre" className="form-control"
+                                    placeholder="R$ 0,00" value={price} onChange={ (e) => setPrice(e.target.value)}
+                                />
+                            </div>
+                            <div className="d-grid col-6 mx-auto">
+                                <button className="btn btn-success"
+                                    onClick={() => validar()}>
+                                    <i className="fa-solid fa-floppy-disk"></i> Guardar
+                                </button>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" id="btnCerrar" className="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
                 
            </div>
         </div>
