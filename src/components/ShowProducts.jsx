@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { show_alerta } from "../functions"
 
 const ShowProducts = () => {
-    const url = "";
+    const url = "http://localhost:8080/product";
     const [products, setProducts] = useState([])
 
     const [id, setId] = useState('sequencia de codigos exemplo 1, 2, 3')
@@ -31,14 +31,47 @@ const ShowProducts = () => {
                     <div className="col-md-4 offset-4">
                         <div className="d-grid mx-auto">
                             <button className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalProducts">
-                                <i className="fa-solid fa-circle-plus pr-3">Add </i>
+                                <i className="fa-solid fa-circle-plus pr-3">Add</i>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div className="row mt-3">
-                    <div className="col-12 col-lg-8 offset-0 offset-lg-12">
-                        
+                    <div className="col-12 col-lg-8 offset-2 offset-lg-12">
+                        <div className="table-responsive">
+                            <table className="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>PRODUCTO</th>
+                                        <th>DESCRIPCION</th>
+                                        <th>PRECIO</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="table-group-divider">
+                                    { products.map( (product, id) => (
+                                        <tr key={product.id}>
+                                            <td>{id}</td>
+                                            <td>{product.name}</td>
+                                            <td>{product.description}</td>
+                                            <td>{new Intl.NumberFormat('es-mx').format(product.price)}</td>
+                                            <td>
+                                                <button className="btn btn-warning">
+                                                    <i className="fa-solid fa-edit"></i>
+                                                </button>
+                                                &nbsp;
+                                                <button className="btn btn-warning">
+                                                <i className="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                        
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
