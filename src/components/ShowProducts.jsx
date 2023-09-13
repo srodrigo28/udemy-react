@@ -102,17 +102,27 @@ const ShowProducts = () => {
               })
     }
 
-    const deleteProduct = (id,name) =>{
+    const deleteProduct= (id,name) =>{
+        var parametros;
+        var metodo;
+
         const MySwal = withReactContent(Swal);
         MySwal.fire({
             title: 'Seguro de eliminar el produto '+name+' ?',
             icon: 'question',text:'No se podrá dar marcha atrás',
             showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
-        })
-        .then((result) => {
+        }).then((result) => {
             if(result.isConfirmed){
                 setId(id);
-                enviarSolicitud('DELETE',{id:id});
+            
+                metodo= 'DELETE';
+                parametros = {id};
+                enviarSolicitud(metodo,parametros);
+
+                console.log('Methodo: ' + metodo,  '\n Paramentro: ', parametros);
+
+                document.getElementById('btnCerrar').click();
+                getProducts();
             }else{
                 show_alerta('El producto no fue eliminado','info');
             }
