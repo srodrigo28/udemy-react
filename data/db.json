@@ -1,19 +1,19 @@
 {
   "product": [
     {
-      "id": 1,
+      "id": "1",
       "name": "G7",
       "description": "Notebook 1",
       "price": 2000
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "G9",
       "description": "Notebook 2",
       "price": 4000
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "G11",
       "description": "Notebook 3",
       "price": 6000
@@ -22,7 +22,85 @@
       "name": "G777",
       "description": "NOTEBOOK DELL",
       "price": "20000",
-      "id": 4
+      "id": "4"
+    },
+    {
+      "name": "Noteboo 23a",
+      "description": "teste descricao",
+      "price": "20020",
+      "id": "pyS1Dmg"
+    },
+    {
+      "name": "Notebook 37A",
+      "description": "Notebook 37A e Notebook 37A",
+      "price": "100",
+      "id": "yBzqR_I"
+    },
+    {
+      "name": "Notebook Gamer i7",
+      "description": "SSD 512, Memória DDR5 32GB",
+      "price": "10.000",
+      "id": "5N8eyfg"
+    },
+    {
+      "name": "Notebook i3 9TH",
+      "description": "SSD 512GB",
+      "price": "3000",
+      "id": "5FYqKUr"
+    },
+    {
+      "name": "notebook aaaa",
+      "description": "bbbb",
+      "price": "3987",
+      "id": "GOmvOK8"
+    },
+    {
+      "name": "nintendo switch 2",
+      "description": "Modo de criar projeto não funciona mais?",
+      "price": "300",
+      "id": "05aIqwk"
+    },
+    {
+      "name": "Sony PlayStation 2",
+      "description": "bbbb",
+      "price": "3987",
+      "id": "A1v1xL7"
+    },
+    {
+      "name": "Sony PlayStation 5",
+      "description": "Modo de criar projeto não funciona mais? :( foi descontinuado!",
+      "price": "10000",
+      "id": "PvEkxoo"
+    },
+    {
+      "name": "Sony PlayStation 5",
+      "description": "Modo de criar projeto não funciona mais?",
+      "price": "10000",
+      "id": "wEz71i6"
+    },
+    {
+      "name": "Sony PlayStation 1",
+      "description": "Modo de criar projeto não funciona mais?",
+      "price": "100",
+      "id": "XNmgBoV"
+    },
+    {
+      "name": "G15 Gamer",
+      "description": "NOTEBOOK DELL",
+      "price": "20000",
+      "id": "gSjqdZV"
+    },
+    {
+      "name": "G15 Gamer",
+      "description": "Notebook 100",
+      "price": "3000",
+      "id": "7LKdQaw"
+    },
+    {
+      "name": "G7 Gamer",
+      "description": "SSD 512GB DDR4",
+      "price": "5000",
+      "id": "de-hw8U"
     }
   ]
 }

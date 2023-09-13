@@ -8,12 +8,12 @@ const ShowProducts = () => {
     const url = "http://localhost:8080/product";
     const [products, setProducts] = useState([])
 
-    const [id, setId] = useState('sequencia de codigos exemplo 1, 2, 3')
-    const [name, setName] = useState('nome padrão')
-    const [description, setDescription] = useState('descricao padrão')
-    const [price, setPrice] = useState('R$ 200')
+    const [id, setId] = useState('')
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [price, setPrice] = useState('')
     const [operation, setOperation] = useState(1)
-    const [title, setTitle] = useState('titulo padrão')
+    const [title, setTitle] = useState('')
 
     useEffect(() => {
         getProducts();
@@ -25,14 +25,13 @@ const ShowProducts = () => {
     }
 
     const openModal = (op, id, name, description, price) => {
-        setId('');
-        setName('');
-        setDescription('');
-        setPrice('');
-        setOperation(op);
-
         if(op === 1){
             setTitle('Registar Producto')
+            setId('');
+            setName('');
+            setDescription('');
+            setPrice('');
+            setOperation(op);
         }else if(op === 2){
             setTitle('Editar Producto')
             setId(id);
@@ -42,7 +41,7 @@ const ShowProducts = () => {
         }
 
         window.setTimeout(function(){
-            document.getElementById('nombre').focus();
+            document.getElementById('name').focus();
         },500);
     }
 
@@ -66,7 +65,9 @@ const ShowProducts = () => {
                     description: description.trim(),
                     price: price
                 }
-                metodo= "POST";
+                metodo= 'POST';
+                document.getElementById('btnCerrar').click();
+                getProducts();
             }
             else{
                 parametros = {
@@ -74,14 +75,18 @@ const ShowProducts = () => {
                     description: description.trim(),
                     price: price
                 }
-                metodo= "PUT";
+                metodo= 'PUT';
+                document.getElementById('btnCerrar').click();
+                getProducts();
             }
             enviarSolicitud(metodo,parametros);
+            document.getElementById('btnCerrar').click();
+            getProducts();
         }
     }
 
     const enviarSolicitud = async(metodo, parametros) => {
-        await axios({ method:metodo, url: url, data:parametros})
+        await axios({ method:metodo, url: url, data:parametros })
               .then(function(respuesta){
                 var tipo = respuesta.data[0];
                 var msj = respuesta.data[1];
@@ -97,21 +102,21 @@ const ShowProducts = () => {
               })
     }
 
-    const deleteProduct = (id, name) => {
+    const deleteProduct = (id,name) =>{
         const MySwal = withReactContent(Swal);
         MySwal.fire({
-            title: 'Seguro de eliminar el produto' + name + ' ?',
-            icon: 'question', text: 'No se podrá dar marcha atrás',
-            showCancelButton:true,confirmButtonText:'Si, eliminar', cancelButtonText:'Cancelar'
+            title: 'Seguro de eliminar el produto '+name+' ?',
+            icon: 'question',text:'No se podrá dar marcha atrás',
+            showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
         })
         .then((result) => {
             if(result.isConfirmed){
                 setId(id);
-                enviarSolicitud('DELETE', {id:id});
+                enviarSolicitud('DELETE',{id:id});
             }else{
-                show_alerta('El producto no fue eliminado', 'info')
+                show_alerta('El producto no fue eliminado','info');
             }
-        })
+        });
     }
 
     return (
@@ -154,48 +159,46 @@ const ShowProducts = () => {
                                                     <i className="fa-solid fa-edit"></i>
                                                 </button>
                                                 &nbsp;
-                                                <button onClick={ () => deleteProduct(product.id, product.name) } className="btn btn-danger">
+                                                <button onClick={ ()=>deleteProduct(product.id,product.name)} className="btn btn-danger">
                                                 <i className="fa-solid fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
-                                    ))
-                                        
+                                    ))   
                                     }
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="modalProducts" className="modal fade" arial-hidden='true'>
+            <div id="modalProducts" className="modal fade">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <label className="h5">{title}</label>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" arial-label="Close"></button>
+                            <span className="h5">{title}</span>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div className="modal-body">
                             <input type="hidden" id="id" />
                             <div className="input-group mb-3">
                                 <span className="input-group-text"> <i className="fa-solid fa-gift"></i> </span>
                                 <input 
-                                    type="text" id="nombre" className="form-control"
-                                    placeholder="Nobre" value={name} onChange={ (e) => setName(e.target.value)}
+                                    type="text" id="name" className="form-control"
+                                    placeholder="Nome" value={name} onChange={ (e) => setName(e.target.value)}
                                 />
                             </div>
                             <div className="input-group mb-3">
                                 <span className="input-group-text"> <i className="fa-solid fa-comment"></i> </span>
                                 <input 
-                                    type="text" id="nombre" className="form-control"
+                                    type="text" id="description" className="form-control"
                                     placeholder="Description" value={description} onChange={ (e) => setDescription(e.target.value)}
                                 />
                             </div>
                             <div className="input-group mb-3">
                                 <span className="input-group-text"> <i className="fa-solid fa-dollar-sign"></i> </span>
                                 <input 
-                                    type="text" id="nombre" className="form-control"
+                                    type="text" id="price" className="form-control"
                                     placeholder="R$ 0,00" value={price} onChange={ (e) => setPrice(e.target.value)}
                                 />
                             </div>
